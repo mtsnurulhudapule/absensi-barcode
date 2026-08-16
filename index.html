@@ -93,8 +93,23 @@ const SCRIPT_URL =
 
 let sedangMemproses = false;
 
+let audioCtx = null;
+
+function aktifkanAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+}
+
+document.addEventListener("click", aktifkanAudio);
+document.addEventListener("touchstart", aktifkanAudio);
+
 function playSuccessBeep() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    aktifkanAudio();
 
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
